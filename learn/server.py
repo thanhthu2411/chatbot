@@ -1,44 +1,33 @@
-import threading
 import socket
+import time
+import brain
 
-HEADER = 64
+HOST = "127.0.0.1"
 PORT = 7000
-SERVER = "localhost"
-# SERVER = socket.gethostbyname(socket.gethostname())
-ADDR = (SERVER, PORT)
-FORMAT = "utf-8"
-DISCONNECT_MESSAGE = "DISCONNECT"
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(ADDR)
 
-def handle_client(conn, addr):
-    print(f"[NEW CONNECTION] {addr} connected")
+server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+server.bind((HOST, PORT))
+server.listen()
+print(f"Server listening on {HOST}:{PORT}")
+
+while True:
+    conn, addr = server.accept()
+    print(f"Client connected: {addr}")
     
-    connected = True    
-    while connected:
-        msg_length = conn.recv(HEADER).decode(FORMAT)
-        if not msg_length:
-            break
-        if msg_length:
-            msg_length = int(msg_length)
-        msg = conn.recv(msg_length).decode(FORMAT)
-        if msg == DISCONNECT_MESSAGE:
-            connected = False
-        print(addr, msg)
-        conn.send("Msg received".encode(FORMAT))
-    
-    conn.close()
-        
-
-def start():
-    server.listen()
-    print("Server is lisening on ", SERVER)
-    while True:
-        conn, addr = server.accept()
-        thread = threading.Thread(target=handle_client, args=(conn, addr))
-        thread.start()
-        print(f'[Active connection] {threading.active_count() -1}')
-
-print("Server is starting...")
-start()
+    with conn:
+        while True:
+            data = conn.recv(1024)
+            
+            if not data:
+                break
+            
+            message = data.decode()
+            print("Received:", message)
+            
+            reply = brain.reply(message)
+            conn.sendall(reply.encode())
+            
+        print("Client disconnected")

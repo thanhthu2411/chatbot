@@ -1,28 +1,26 @@
-import threading
 import socket
+from brain import is_goodbye
 
-HEADER = 64
+HOST = "127.0.0.1"
 PORT = 7000
-SERVER = "localhost"
-ADDR = (SERVER, PORT)
-FORMAT = "utf-8"
-DISCONNECT_MESSAGE = "DISCONNECT"
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(ADDR)
 
-def send(msg):
-    message = msg.encode(FORMAT)
-    msg_length = len(message)
-    send_length = str(msg_length).encode(FORMAT)
-    send_length += b' ' * (HEADER-len(send_length))
-    client.send(send_length)
-    client.send(message)
+client.connect((HOST, PORT))
+print("Connected to server. Type 'quit' to exit.")
 
-send("Hello")
-input()
-send("Hello world")
-input()
-send("Hello class")
-input()
-send(DISCONNECT_MESSAGE)
+while True:
+    text =  input("You: ").strip().lower()
+    
+    if text == "":
+        continue
+    
+    client.sendall(text.encode())
+    
+    reply = client.recv(1024)
+    print("Server:", reply.decode())
+
+    if is_goodbye(text):
+        break
+
+client.close()
