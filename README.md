@@ -8,7 +8,7 @@ Steps to build and/or run the software:
 
 1. Clone or download this repository
 2. Install the GUI library: `pip install customtkinter`
-3. Start the server in one terminal: `python server.py` (it listens on `127.0.0.1`, port `5000`)
+3. Start the server in one terminal: `python server.py` (it listens on `127.0.0.1`, port `7000`)
 4. Start the client in a second terminal: `python client.py`
 
 Note: the weather feature needs an internet connection. If you're offline, the bot replies with an error message instead.
@@ -46,6 +46,5 @@ The following items I plan to fix, improve, and/or add to this project in the fu
 * [ ] Handle multiple clients at the same time using threads
 * [ ] Add message boundaries (for example, one message per line) so messages can't merge in the TCP stream
 * [ ] Run the network calls in a background thread so the chat window doesn't freeze while waiting for a reply
-* [ ] Understand more phrasing, using a trained intent classifier or an LLM API
 * [ ] Add a web-based chat page
 * [ ] Connect the chatbot to my marketplace app so it can answer questions about listings
