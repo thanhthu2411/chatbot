@@ -54,7 +54,8 @@ def add_message(text, sender):
         mes_label.pack(anchor="e", padx=5, pady=10, ipadx=5, ipady=5)
     else:
         mes_label.pack(anchor="w", padx=5, pady=10, ipadx=5, ipady=5)
-    
+
+
 
 try:
     client.connect((HOST, PORT))

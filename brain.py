@@ -16,8 +16,7 @@ def is_goodbye(text):
 def reply(text):
     words = get_words(text) 
 
-    # Handle goodbye before the other intents so every goodbye form gets
-    # the goodbye response, even if it also contains another keyword.
+
     if is_goodbye(text):
         return "Goodbye! Come back any time."
     
