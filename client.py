@@ -6,7 +6,6 @@ HOST = "127.0.0.1"
 PORT = 7000
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.settimeout(10)    # don't wait forever for a reply
 
 
 # while True:

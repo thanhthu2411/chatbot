@@ -18,16 +18,20 @@ while True:
     print(f"Client connected: {addr}")
     
     with conn:
-        while True:
-            data = conn.recv(1024)
-            
-            if not data:
-                break
-            
-            message = data.decode()
-            print("Received:", message)
-            
-            reply = brain.reply(message)
-            conn.sendall(reply.encode())
-            
+        try:
+            while True:   
+                data = conn.recv(1024) 
+                        
+                if not data:
+                    break
+                        
+                message = data.decode()
+                print("Received:", message)
+                        
+                reply = brain.reply(message)
+                conn.sendall(reply.encode())
+                        
+        except ConnectionError as err:
+            print("Client dropped the connection:", err)
+         
         print("Client disconnected")
